@@ -33,15 +33,13 @@ class Menu {
                             
                             let isValid = Authentication.validation(username, pin)
                             if (isValid) {
-                                try{
-                                    let res = await Authentication.register(username, pin)
-                                    if(!res.ok) throw new Error(res.statusText)
-    
+                                let [status, data] = await Authentication.register(username, pin)
+                                if(status) {
                                     console.clear()
-                                    console.log("Register Success")
+                                    console.log(data)
                                     break
-                                }catch(err){
-                                    console.log(err)
+                                }else{
+                                    console.log(data.message)
                                 }
                             }
                         }
