@@ -1,5 +1,5 @@
 import { createInterface } from 'readline/promises';
-import User from './models/user.js';
+import Authentication from './models/authentication.js';
 
 const readline = createInterface({
   input: process.stdin,
@@ -8,10 +8,8 @@ const readline = createInterface({
 
 
 const startOnlineBank = async () => {
-    let user = new User()
 
     while(true) {
-        console.clear()
         console.log("Welcome to DIGI ATM")
         console.log("Menu:")
         console.log("1. Register")
@@ -28,11 +26,45 @@ const startOnlineBank = async () => {
                         console.clear()
                         console.log("Register")
                         let pin = await readline.question("pin: ")
+                        
+                        let isValid = Authentication.validation(username, pin)
+                        if (isValid) {
+                            try{
+                                let res = await Authentication.register(username, pin)
+                                if(!res.ok) throw new Error(res.statusText)
 
-                        let result = user.register(username, pin)
-                        if(result) break
+                                console.clear()
+                                console.log("Register Success")
+                                break
+                            }catch(err){
+                                console.log(err)
+                            }
+                        }
                     }
                 }
+                break
+            }
+            case 2 : {
+                while(true){
+                    console.clear()
+                    console.log("Login")
+                    let username = await readline.question("username: ")
+                    console.clear()
+                    console.log("Login")
+                    let pin = await readline.question("pin: ")
+
+                    try{
+                        let res = await Authentication.login(username, pin)
+                        if (!res.ok) throw new Error(res.statusText)
+
+                        console.clear()
+                        console.log("Login Success")
+                        break
+                    }catch(err) {
+                        console.log(err)
+                    }
+                }
+                break
             }
         }
     }
