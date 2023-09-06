@@ -47,7 +47,7 @@ class User {
                 let data = await res.json()
                 return [true, data]
             }catch{
-                return [false, Error("error message from server")]
+                return [false, err]
             }
         }
     }
@@ -70,7 +70,7 @@ class User {
             let data = await res.json()
             return [true, data]
         }catch{
-            return [false, Error("error message from server")]
+            return [false, err]
         }
     }
 
@@ -104,7 +104,7 @@ class User {
 
             return [true, processedData]
         }catch(err){
-            return [false, Error(err)]
+            return [false, err]
         }
     }
 }
