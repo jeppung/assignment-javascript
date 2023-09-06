@@ -58,7 +58,9 @@ class Menu {
                         try{
                             let res = await Authentication.login(username, pin)
                             if (!res.ok) throw new Error(res.statusText)
+                            let data = await res.json()
 
+                            user.id = data.id
                             user.username = username
                             user.pin = pin
                             user.isAuth = true
@@ -77,7 +79,7 @@ class Menu {
         return user
     }
 
-    static async mainMenu() {
+    static async mainMenu(user) {
         while(true) {
             console.log("Welcome to DIGI ATM")
             console.log("Menu:")
@@ -90,6 +92,19 @@ class Menu {
     
             switch(parseInt(input)) {
                 case 1 : {
+                    console.clear()
+                    console.log("Check balance")
+                    try{
+                        let res = await user.getBalance()
+                        if(!res.ok) throw new Error(res.statusText)
+                        let data = await res.json()
+                        console.log(`Your balance is ${data.data.balance}`)
+                        await readline.question("Press any Key to back...")
+                        console.clear()
+                        break
+                    }catch(err){
+                        console.log(err)
+                    }
                     break
                 }
                 case 2 : {
