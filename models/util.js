@@ -1,6 +1,8 @@
 class Util {
 
     static URL = "http://localhost:1337/api"
+    static DEBIT = "debit"
+    static CREDIT = "credit"
 
     static formatBalance(balance) {
         return new Intl.NumberFormat("id-ID", {
