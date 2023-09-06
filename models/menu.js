@@ -78,6 +78,7 @@ class Menu {
     }
 
     static async mainMenu(user) {
+        mainLoop:
         while(true) {
             console.log("Welcome to DIGI ATM")
             console.log("Menu:")
@@ -159,8 +160,16 @@ class Menu {
                     }
                     break
                 }
+                case 5 : {
+                    break mainLoop
+                }
+                default: {
+                    console.clear()
+                }
             }
         }
+
+        readline.close()
     }
 }
 
