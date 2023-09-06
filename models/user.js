@@ -24,7 +24,6 @@ class User {
     async debitMoney(input) {
         let [status, data] = await this.getBalance()
         if(status) {
-            console.log(input, data)
             if (input > data) {
                 return [false, Error("Balance not enough for Debit")]
             }
@@ -48,6 +47,28 @@ class User {
             }catch{
                 return [false, Error("error message from server")]
             }
+        }
+    }
+
+    async creditMoney(input) {
+        try{
+            let res = await fetch("http://localhost:1337/api/transactions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    data: {
+                      amount: input,
+                      userId: this.id
+                    }
+                })
+            })
+
+            let data = await res.json()
+            return [true, data]
+        }catch{
+            return [false, Error("error message from server")]
         }
     }
 }
