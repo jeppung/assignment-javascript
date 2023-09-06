@@ -1,3 +1,5 @@
+import Util from "./util.js"
+
 class User {
     constructor(_id, _username, _pin, _isAuth) {
         this.id = _id
@@ -69,6 +71,40 @@ class User {
             return [true, data]
         }catch{
             return [false, Error("error message from server")]
+        }
+    }
+
+    async getMutation(type, order) {
+        try{
+            let res = await fetch(`http://localhost:1337/api/mutation/${this.id}?sort=${order}&filter=${type}`, {
+                method: "GET",   
+            })
+
+            let data = await res.json()
+            if (data.data.transactionList.length == 0) return [false, Error("List data not found")]
+            
+            let processedData = data.data.transactionList.map((v) => {
+                let rawDate = new Date(v.createdAt)
+                let days = rawDate.getDate().toLocaleString('en-US', {
+                    minimumIntegerDigits: 2
+                })
+                let months = rawDate.getMonth().toLocaleString('en-US', {
+                    minimumIntegerDigits: 2
+                })
+                let years = rawDate.getFullYear()
+
+                return [
+                    `${days}-${months}-${years}`,
+                    v.type,
+                    Util.formatBalance(v.amount)
+                ]
+            })
+
+            processedData.unshift(["Date", "Type", "Amount"])
+
+            return [true, processedData]
+        }catch(err){
+            return [false, Error(err)]
         }
     }
 }
