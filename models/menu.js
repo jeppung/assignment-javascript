@@ -118,6 +118,27 @@ class Menu {
                                 console.log(data.message)
                                 break
                             }
+                            console.clear()
+                            break
+                        }
+                    }
+                    break
+                }
+                case 3: {
+                    while(true){
+                        console.clear()
+                        console.log("Credit")
+                        let input = await readline.question("input: ")
+    
+                        if(!Number.isNaN(parseInt(input)) && input > 0){
+                            let [status, data] = await user.creditMoney(input)
+                            if(status){
+                                console.clear()
+                            }else{
+                                console.clear()
+                                console.log(data.message)
+                            }
+                            break
                         }
                     }
                     break
