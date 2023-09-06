@@ -20,7 +20,7 @@ class Authentication {
                     data: {
                         username: username,
                         pin: pin,
-                        wallet_number: Math.floor(Math.random() * 9000000000).toString()
+                        wallet_number: Math.floor(Math.random() * 9000000000 + 1000000000).toString()
                     }
                 })
             })
