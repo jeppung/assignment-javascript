@@ -2,6 +2,7 @@ import { createInterface } from 'readline/promises';
 import Authentication from './authentication.js';
 import User from './user.js';
 import Util from './util.js';
+import { table } from 'table';
 
 const readline = createInterface({
     input: process.stdin,
@@ -138,6 +139,25 @@ class Menu {
                                 console.clear()
                                 console.log(data.message)
                             }
+                            break
+                        }
+                    }
+                    break
+                }
+                case 4: {
+                    while(true) {
+                        console.clear()
+                        let input = (await readline.question("input: ")).split(" ")
+                        
+                        if(input.length == 2) {
+                            let [status, data] =  await user.getMutation(input[0].toUpperCase(), input[1])
+                            if(status){
+                                console.table(table(data))
+                            }else{
+                                console.log(data.message)
+                            }
+                            await readline.question("Press any Key to back...")
+                            console.clear()
                             break
                         }
                     }
