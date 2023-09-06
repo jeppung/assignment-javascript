@@ -110,7 +110,7 @@ class Menu {
                         let input = await readline.question("input: ")
 
                         if(!Number.isNaN(parseInt(input)) && input > 0){
-                            let [status, data] = await user.debitMoney(input)
+                            let [status, data] = await user.processMoney(input, Util.DEBIT)
                             if(!status) {
                                 console.clear()
                                 console.log(data.message)
@@ -129,7 +129,7 @@ class Menu {
                         let input = await readline.question("input: ")
     
                         if(!Number.isNaN(parseInt(input)) && input > 0){
-                            let [status, data] = await user.creditMoney(input)
+                            let [status, data] = await user.processMoney(input, Util.CREDIT)
                             if(status){
                                 console.clear()
                             }else{
