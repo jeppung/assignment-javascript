@@ -71,6 +71,9 @@ class Menu {
                         }
                     }
                 }
+                default: {
+                    console.clear()
+                }
             }
         }
 
