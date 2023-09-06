@@ -30,18 +30,27 @@ class Authentication {
     }
 
     static async login(username, pin) {
-        return fetch("http://localhost:1337/api/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                data: {
-                    username: username,
-                    pin: pin,
-                }
+        try{
+            let res = await fetch("http://localhost:1337/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    data: {
+                        username: username,
+                        pin: pin,
+                    }
+                })
             })
-        })
+            
+            let data = await res.json()
+            if(!res.ok) return [false, Error(res.statusText)]
+
+            return [true, data]
+        }catch(err) {
+            return [false, err]
+        }
     }
 }
 
