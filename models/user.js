@@ -8,9 +8,47 @@ class User {
 
 
     async getBalance() {
-        return fetch(`http://localhost:1337/api/balance/${this.id}`, {
-            method: "GET"
-        })
+        try{
+            let res = await fetch(`http://localhost:1337/api/balance/${this.id}`, {
+                method: "GET"
+            })
+
+            let data = await res.json()
+            
+            return [true, data.data.balance]
+        }catch(err){
+            return [false, err]
+        }
+    }
+
+    async debitMoney(input) {
+        let [status, data] = await this.getBalance()
+        if(status) {
+            console.log(input, data)
+            if (input > data) {
+                return [false, Error("Balance not enough for Debit")]
+            }
+            
+            try{
+                let res = await fetch("http://localhost:1337/api/transactions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        data: {
+                          amount: -input,
+                          userId: this.id
+                        }
+                    })
+                })
+    
+                let data = await res.json()
+                return [true, data]
+            }catch{
+                return [false, Error("error message from server")]
+            }
+        }
     }
 }
 
