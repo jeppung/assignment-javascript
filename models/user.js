@@ -23,10 +23,10 @@ class User {
         }
     }
 
-    async debitMoney(input) {
+    async processMoney(input, type) {
         let [status, data] = await this.getBalance()
         if(status) {
-            if (input > data) {
+            if (type === Util.DEBIT && input > data) {
                 return [false, Error("Balance not enough for Debit")]
             }
             
@@ -38,7 +38,7 @@ class User {
                     },
                     body: JSON.stringify({
                         data: {
-                          amount: -input,
+                          amount: type === Util.DEBIT ? -input : input,
                           userId: this.id
                         }
                     })
@@ -49,28 +49,6 @@ class User {
             }catch{
                 return [false, err]
             }
-        }
-    }
-
-    async creditMoney(input) {
-        try{
-            let res = await fetch(`${Util.URL}/transactions`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    data: {
-                      amount: input,
-                      userId: this.id
-                    }
-                })
-            })
-
-            let data = await res.json()
-            return [true, data]
-        }catch{
-            return [false, err]
         }
     }
 
