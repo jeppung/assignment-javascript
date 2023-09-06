@@ -1,6 +1,7 @@
 import { createInterface } from 'readline/promises';
 import Authentication from './authentication.js';
 import User from './user.js';
+import Util from './util.js';
 
 const readline = createInterface({
     input: process.stdin,
@@ -98,7 +99,7 @@ class Menu {
                         let res = await user.getBalance()
                         if(!res.ok) throw new Error(res.statusText)
                         let data = await res.json()
-                        console.log(`Your balance is ${data.data.balance}`)
+                        console.log(`Your balance is ${Util.formatBalance(data.data.balance)}`)
                         await readline.question("Press any Key to back...")
                         console.clear()
                         break
