@@ -54,22 +54,20 @@ class Menu {
                         console.clear()
                         console.log("Login")
                         let pin = await readline.question("pin: ")
-    
-                        try{
-                            let res = await Authentication.login(username, pin)
-                            if (!res.ok) throw new Error(res.statusText)
-                            let data = await res.json()
 
+                        let [status, data] = await Authentication.login(username, pin)
+                        
+                        if(status) {
                             user.id = data.id
                             user.username = username
                             user.pin = pin
                             user.isAuth = true
-                            
+
                             console.clear()
                             console.log("Login Success")
                             break mainLoop
-                        }catch(err) {
-                            console.log(err)
+                        }else{
+                            console.log(data.message)
                         }
                     }
                 }
