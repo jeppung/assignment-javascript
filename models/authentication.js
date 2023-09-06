@@ -2,7 +2,7 @@ import Util from "./util.js"
 
 class Authentication {
 
-    static async validation(username, pin) {
+    static validation(username, pin) {
         if ((username.length <= 10 && username.length > 0) && !Number.isNaN(parseInt(pin))) {
             return true
         }
