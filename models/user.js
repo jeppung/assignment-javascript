@@ -11,7 +11,7 @@ class User {
 
     async getBalance() {
         try{
-            let res = await fetch(`http://localhost:1337/api/balance/${this.id}`, {
+            let res = await fetch(`${Util.URL}/balance/${this.id}`, {
                 method: "GET"
             })
 
@@ -31,7 +31,7 @@ class User {
             }
             
             try{
-                let res = await fetch("http://localhost:1337/api/transactions", {
+                let res = await fetch(`${Util.URL}/transactions`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -54,7 +54,7 @@ class User {
 
     async creditMoney(input) {
         try{
-            let res = await fetch("http://localhost:1337/api/transactions", {
+            let res = await fetch(`${Util.URL}/transactions`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -76,7 +76,7 @@ class User {
 
     async getMutation(type, order) {
         try{
-            let res = await fetch(`http://localhost:1337/api/mutation/${this.id}?sort=${order}&filter=${type}`, {
+            let res = await fetch(`${Util.URL}/mutation/${this.id}?sort=${order}&filter=${type}`, {
                 method: "GET",   
             })
 

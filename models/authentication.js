@@ -1,3 +1,5 @@
+import Util from "./util.js"
+
 class Authentication {
 
     static async validation(username, pin) {
@@ -9,7 +11,7 @@ class Authentication {
     
     static async register(username, pin) {
         try{
-            let res = await fetch("http://localhost:1337/api/register", {
+            let res = await fetch(`${Util.URL}/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -31,7 +33,7 @@ class Authentication {
 
     static async login(username, pin) {
         try{
-            let res = await fetch("http://localhost:1337/api/login", {
+            let res = await fetch(`${Util.URL}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -43,7 +45,7 @@ class Authentication {
                     }
                 })
             })
-            
+
             let data = await res.json()
             if(!res.ok) return [false, Error(res.statusText)]
 
