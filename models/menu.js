@@ -95,20 +95,31 @@ class Menu {
                 case 1 : {
                     console.clear()
                     console.log("Check balance")
-                    try{
-                        let res = await user.getBalance()
-                        if(!res.ok) throw new Error(res.statusText)
-                        let data = await res.json()
-                        console.log(`Your balance is ${Util.formatBalance(data.data.balance)}`)
+                    let [status, data] = await user.getBalance()
+                    if(status) {
+                        console.log(`Your balance is ${Util.formatBalance(data)}`)
                         await readline.question("Press any Key to back...")
                         console.clear()
                         break
-                    }catch(err){
-                        console.log(err)
+                    }else{ 
+                        console.log(data)
                     }
-                    break
                 }
                 case 2 : {
+                    while(true){
+                        console.clear()
+                        console.log("Debit")
+                        let input = await readline.question("input: ")
+
+                        if(!Number.isNaN(parseInt(input)) && input > 0){
+                            let [status, data] = await user.debitMoney(input)
+                            if(!status) {
+                                console.clear()
+                                console.log(data.message)
+                                break
+                            }
+                        }
+                    }
                     break
                 }
             }
